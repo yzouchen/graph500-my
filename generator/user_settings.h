@@ -12,7 +12,7 @@
 
 /* Settings for user modification ----------------------------------- */
 
-#define GENERATOR_USE_PACKED_EDGE_TYPE /* -- 48 bits per edge */
+// #define GENERATOR_USE_PACKED_EDGE_TYPE /* -- 48 bits per edge */
 //#undef GENERATOR_USE_PACKED_EDGE_TYPE /* 64 bits per edge */
 
 #define FAST_64BIT_ARITHMETIC /* Use 64-bit arithmetic when possible. */

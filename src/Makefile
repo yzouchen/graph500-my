@@ -1,4 +1,4 @@
-CFLAGS = -Drestrict=__restrict__ -O3 -DGRAPH_GENERATOR_MPI -DREUSE_CSR_FOR_VALIDATION -I../aml
+CFLAGS = -Drestrict=__restrict__ -O3 -DGRAPH_GENERATOR_MPI -DREUSE_CSR_FOR_VALIDATION -I../aml -fcommon
 LDFLAGS = -lpthread
 MPICC = mpicc
 
@@ -7,6 +7,7 @@ all: graph500_reference_bfs_sssp graph500_reference_bfs
 
 GENERATOR_SOURCES = ../generator/graph_generator.c ../generator/make_graph.c ../generator/splittable_mrg.c ../generator/utils.c
 SOURCES = main.c utils.c validate.c ../aml/aml.c
+GEN_32_SOURCES = generate_edgelist_32.c utils.c validate.c ../aml/aml.c
 HEADERS = common.h csr_reference.h bitmap_reference.h
 
 graph500_reference_bfs_sssp: bfs_reference.c $(SOURCES) $(HEADERS) $(GENERATOR_SOURCES) csr_reference.c sssp_reference.c
@@ -20,6 +21,9 @@ graph500_custom_bfs: bfs_custom.c $(SOURCES) $(HEADERS) $(GENERATOR_SOURCES) csr
 
 graph500_custom_bfs_sssp: bfs_custom.c sssp_custom.c $(SOURCES) $(HEADERS) $(GENERATOR_SOURCES) csr_reference.c
 	$(MPICC) $(CFLAGS) $(LDFLAGS) -o graph500_custom_bfs_sssp bfs_custom.c sssp_custom.c csr_reference.c $(SOURCES) $(GENERATOR_SOURCES) -lm
+
+generator32: bfs_reference.c $(GEN_32_SOURCES) $(HEADERS) $(GENERATOR_SOURCES) csr_reference.c
+	$(MPICC) $(CFLAGS) $(LDFLAGS) -o generator32 bfs_reference.c csr_reference.c $(GEN_32_SOURCES) $(GENERATOR_SOURCES) -lm
 
 clean:
 	-rm -f graph500_*
